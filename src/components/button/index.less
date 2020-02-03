@@ -1,0 +1,46 @@
+.button-container {
+  position: relative;
+  display: inline-block;
+  width: 120px;
+  height: 36px;
+  color: #fff;
+  background: #1890ff;
+  border: 1px solid #1890ff;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+
+  span {
+    //font-size: 14px;
+    line-height: 1.5;
+  }
+  &:active::after{
+    opacity: .3;
+    //设置初始状态
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0s;
+  }
+  &:hover {
+    background: #40a9ff;
+    border-color: #40a9ff;
+  }
+  &::after{
+    content: "";
+    display: block;
+    position: absolute;
+    //扩大伪类元素4个方向各10px
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    pointer-events: none;
+    background-color: #333;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    opacity: 0;
+    transition: all .3s;
+ }
+}
