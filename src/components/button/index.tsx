@@ -6,7 +6,8 @@ const classNames = require('classnames');
 interface Button {
     // children?:React.ReactNode, FC已定义
     // onClick?:React.ReactEventHandler
-    onClick:(event: React.MouseEvent<HTMLButtonElement>)=>void;
+    // ref: React.MutableRefObject<null>,
+    onClick?:(event: React.MouseEvent<HTMLButtonElement>)=>void;
 }
 
 let buttonClass = classNames('button-container')

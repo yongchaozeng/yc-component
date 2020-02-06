@@ -1,4 +1,5 @@
-import React, { FC, useState, useEffect, ReactNode ,useRef} from 'react'
+import React, { FC, useState, useEffect, ReactNode, useRef, MouseEvent } from 'react'
+import { findDOMNode } from 'react-dom'
 import ReactDOM from 'react-dom';
 import './index.less'
 import Portal from './portal'
@@ -6,12 +7,12 @@ import Portal from './portal'
 var classNames = require('classnames');
 
 interface Select {
-    parent?: '',
+    parent?: string,
+    key?: string,
 }
 
-let dropdown = ''
 
-const Select: FC<Select> = (props) => {
+const Select: FC<Select> = (props: Select) => {
     const container = useRef(null);
     const [top, setTop] = useState(0)
     const [show, setShow] = useState(false)
@@ -20,16 +21,30 @@ const Select: FC<Select> = (props) => {
         document.onscroll = () => {
             // distance()
         }
-        document.body.onclick = ((e) => {
-            let dom = document.querySelector('.select-dropdown-menu')
-            let container = document.querySelector('.select-container')
-            console.log(111, dropdown)
-            console.log(22, e.target)
-            // if (!isChildOf(e.target, dropdown)) {
-            //     setShow(false)
-            // }
+        // document.body.onclick = ((e) => {
+        // let dom = document.querySelector('.select-dropdown-menu')
+        // // let container = document.querySelector('.select-container')
+        // // console.log(111, dropdown)
+        // // findDOMNode
+        // console.log(22, e.target)
+        // console.log(33,container.current)
+
+        // if (!isChildOf(e.target, container.current)) {
+        //     console.log(12)
+        // setShow(false)
+        // }
+        // console.log(2,container.current)
+        // })
+
+        document.addEventListener('click', (e) => {
+            // console.log(2, container.current)
+            if (!isChildOf(e.target, container.current)) {
+                // console.log(12)
+                setShow(false)
+            }
+            // console.log(2)
+            // setShow(false)
         })
-        
     }, [])
     function isChildOf(child: ReactNode, parent: ReactNode) {
         var parentNode;
@@ -47,17 +62,26 @@ const Select: FC<Select> = (props) => {
 
     const distance = (target: any) => {
         // let dom: HTMLDivElement | null = document.querySelector('.select-container')
-        if (target) {
+        if (target && top === 0) {
             setTop(target.parentNode.getBoundingClientRect().bottom)
         }
     }
     const openDropdown: ((event: React.MouseEvent<HTMLDivElement>) => void) = (e: any) => {
         // e.stopPropagation()
-        dropdown = e.target.parentNode
-
-        console.log(33)
+        // e.nativeEvent.stopImmediatePropagation()
+        console.log(1, container.current)
+        console.log(2, e.target)
+      
         distance(e.target)
-        setShow(!show)
+        setShow(true)
+        if (isChildOf(e.target, container.current)) {
+            // e.nativeEvent.stopImmediatePropagation()
+            // console.log(12)
+            setShow(!show)
+        }
+    }
+    const clickDropdown = (e: MouseEvent) => {
+        e.nativeEvent.stopImmediatePropagation()
     }
     return (
         <div className={'select-container'} ref={container} onClick={openDropdown} >
@@ -66,7 +90,7 @@ const Select: FC<Select> = (props) => {
             {
                 (
                     show && <Portal  >
-                        <div onClick={(e) => { e.stopPropagation() }} className='select-dropdown-menu' style={{ top: top }}>
+                        <div className='select-dropdown-menu' onClick={clickDropdown} style={{ top: top }}>
                             <div>1</div>
                             <div>2</div>
                             <div>3</div>

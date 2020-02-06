@@ -1,46 +1,38 @@
-import React, { FC, useState, useEffect } from 'react'
-import './index.less'
-var classNames = require('classnames');
+import React, { MouseEvent } from "react";
 
-interface Test {
-
-}
-
-const Test: FC<Test> = (props) => {
-    const [show, setShow] = useState(false)
-    useEffect(() => {
-        document.body.addEventListener('click', (e) => {
-            console.log(3);
-        })
-        document.addEventListener('click', (e) => {
-            setShow(false)
-            
-            console.log(2);
-        })
-
-    }, [])
-
-
-    const testClick = (event: React.MouseEvent<HTMLDivElement>) => {
-        // event.nativeEvent.stopPropagation()
-        event.nativeEvent.stopImmediatePropagation()
-        event.nativeEvent.stopPropagation()
-
-        console.log(1,event.target)
-        setShow(true)
+class Test extends React.Component {
+    constructor(props: any) {
+        super(props)
     }
-    return (
-        <>
-            <div onClick={testClick} >测试组件</div>
+    componentDidMount() {
+        // document.addEventListener('click', (e) => {
+        //     console.log(2);
+        // })
+        // document.body.addEventListener('click', (e) => {
+        //     console.log(3);
+        // })
+        document.onclick=()=>{
+            console.log(2)
+        }
+        // document.addEventListener('click', (e) => {
+        //     this.setState({
+        //         showInput: false,
+        //     })
+        // })
+    }
 
-            {
-                show && <h1>11</h1>
-            }
-        </>
-
-
-    )
-
+    // 阻止冒泡
+    stopBubble(event: MouseEvent) {
+        event.nativeEvent.stopImmediatePropagation() //阻止冒泡
+    }
+    testClick(e: MouseEvent<HTMLDivElement>) {
+        this.stopBubble(e)
+        console.log(1);
+    }
+    render() {
+        return (
+            <div onClick={(e) => this.testClick(e)}>测试组件</div>
+        )
+    }
 }
-
 export default Test
