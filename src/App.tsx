@@ -25,7 +25,7 @@ const App: React.FC = () => {
   }
   return (
     <div className="App">
-   
+      {/* <Test /> */}
       <Button onClick={(e) => { submit(e) }} >23</Button>
       <Input value={value} onChange={onChange} />
       <h1>{value}</h1>
@@ -34,7 +34,7 @@ const App: React.FC = () => {
         <Select key='1'></Select>
         <h1>111</h1>
         <h1>111</h1>
-       <Select key='2' ></Select>
+        <Select key='2' ></Select>
       </div>
     </div>
 
