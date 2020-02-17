@@ -36,7 +36,6 @@ let mkdir = function (a) {
 let reads = [`${basepath}template/index.tsx`, ];//要读取的文件
 
 let readFile = function () {
-    console.log(11)
     return new Promise((res) => {
         for (let a of reads) {
             let text = fs.readFileSync(a).toString();
