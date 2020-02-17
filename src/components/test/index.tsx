@@ -17,7 +17,6 @@ class Test extends React.Component {
     }
     testClick(e: MouseEvent<HTMLDivElement>) {
         // this.stopBubble(e)
-        console.log(12);
     }
     render() {
         return (
