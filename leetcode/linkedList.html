@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试</title>
+</head>
+
+<body>
+    <script>
+        class ListNode {
+            constructor(element) {
+                this.element = element
+                this.next = null
+            }
+        }
+        class LinkList {
+            constructor() {
+                this.head = null
+                this.length = 0
+            }
+            append(element) {
+                const node = new ListNode(element)
+                let current = null
+                if (!this.head) {
+                    this.head = node
+                } else {
+                    current = this.head
+                    while (current.next) {
+                        current = current.next
+                    }
+                    current.next = node
+                }
+                this.length++
+            }
+            // insert(element, index) {
+            //     if (index >= 0 && index <= this.head.length) {
+            //         let i = 0
+            //         let current = this.head
+            //         let 
+            //     }
+            // }
+            insert(position, element) {
+                if (position >= 0 && position <= this.length) {
+                    const node = new ListNode(element)
+                    let current = this.head
+                    let previous = null
+                    let index = 0
+                    if (position === 0) {
+                        this.head = node
+                    } else {
+                        while (index++ < position) {
+                            previous = current
+                            current = current.next
+                        }
+                        node.next = current
+                        previous.next = node
+                    }
+                    this.length++
+                    return true
+                }
+                return false
+            }
+
+            removeAt(length) {
+                let current = this.head
+                let previous = null
+                let index = 0
+                if (length >= 0 && length < this.length) {
+                    if (length === 0) {
+                        this.head = current.next
+                    } else {
+                        while (length > index) {
+                            previous = current
+                            current = current.next
+                            index++
+                        }
+                        previous.next = current.next
+                    }
+                    this.length--
+                    return current.element
+                }
+            }
+            remove(element) {
+                console.log(this.indexOf)
+            }
+            size() {
+                return this.length
+            }
+            findIndex(element) {
+                let index = 0
+                let current = this.head
+                while (current.element !== element) {
+                    current = current.next
+                    index++
+                }
+                return index
+            }
+            print() {
+                let array = []
+                let current = this.head
+                while (current) {
+                    array.push(current.element)
+                    current = current.next
+                }
+                return array.join('')
+            }
+            printReverse() {
+                let array = []
+                let current = this.head
+                while (current) {
+                    array.unshift(current.element)
+                    current = current.next
+                }
+                return array.join('')
+            }
+        }
+        let a = new LinkList()
+        a.append(2)
+        a.append(3)
+        a.append(4)
+        a.append(5)
+        a.append(6)
+        a.insert(0, 7)
+
+        console.log(a)
+
+        function RandomListNode(x) {
+            this.element = x;
+            this.next = null;
+            this.random = null;
+        }
+
+        // function Clone(pHead) {
+        //     if (pHead === null) return;
+
+        //     // 对应思路二中的第一步：
+        //     var currNode = pHead;
+        //     while (currNode !== null) {
+        //         var node = new RandomListNode(currNode.element);
+        //         node.next = currNode.next;
+        //         currNode.next = node;
+        //         currNode = node.next;
+        //     }
+
+        //     // 对应思路二中的第二步：
+        //     currNode = pHead;
+        //     while (currNode !== null && currNode.next !== null) {
+        //         if (currNode.random) {
+        //             currNode.next.random = currNode.random.next;
+        //         }
+        //         currNode = currNode.next.next;
+        //     }
+        //     debugger
+
+        //     //拆分，对应思路二中的第三步：        
+        //     var pCloneHead = pHead.next;
+        //     var temp = null;
+        //     currNode = pHead;
+        //     while (currNode.next !== null) {
+        //         tmp = currNode.next;
+        //         currNode.next = tmp.next;
+        //         currNode = tmp;
+        //     }
+        //     return pCloneHead;
+        // }
+        // Clone(a.head)
+        // a.remove()
+        // console.log(a.findIndex(5))
+        // function reverseList(head) {
+        //     let cur = head;
+        //     let newNode = null
+        //     let next = head.next
+        //     while (cur.next) {
+        //         cur.next = newNode
+        //         newNode = cur
+        //         cur = next
+        //         next = next.next
+        //     }
+        //     cur.next = newNode
+        //     console.log(cur)
+        //     // return newNode
+
+        // }
+
+        // var reverseList = function (head) {
+        //     let prev = null
+        //     let cur = head
+        //     if (head) {
+        //         let next = head.next
+        //         while (cur.next) {
+        //             cur.next = prev
+        //             prev = cur
+        //             cur = next
+        //             next = next.next
+        //         }
+        //         cur.next = prev
+        //     }   
+        //     return cur
+        // };
+        // console.log(1, a.head)
+        // reverseList(JSON.parse(JSON.stringify(a.head)))
+        // console.log(1, reverseList(a.head))
+
+    </script>
+</body>
+
+</html>
