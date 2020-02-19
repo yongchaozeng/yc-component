@@ -1,0 +1,28 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Untitled Document</title>
+
+</head>
+
+<body onclick="show_element(event)">
+    <h1>this is a heading</h1>
+    <p>这是段落</p>
+    <p>这又是一个段落</p>
+    <script type="text/javascript">
+        function show_element(e) {
+            if (!e) {
+                var e = window.event;
+            }
+            //获取事件点击元素
+            var targ = e.target;
+            //获取元素名称
+            var tname = targ.tagName;
+            console.log(tname)
+            // alert(tname);
+        }
+    </script>
+</body>
+
+</html>

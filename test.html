@@ -8,7 +8,50 @@
 </head>
 
 <body>
+
+    <div id='a' onclick='openA("a")'>
+        <div class="pp">
+            <h1>111</h1>
+        </div>
+    </div>
+    <div id='b' onclick='openA("b")'>
+        <div class="pp">
+            <h1>222</h1>
+        </div>
+    </div>
+
     <script>
+        let openModal = (function openModal() {
+            let modalContainer = document.createElement('div')
+            let body = document.querySelector('body')
+            let single = null
+            return function (children) {
+                if (!single) {
+                    // children
+                    // console.log(8, children)
+                    single = modalContainer.appendChild(children)
+                    body.appendChild(modalContainer)
+                } else {
+                    single = null
+                    // console.log(modalContainer.childNodes)
+                    modalContainer.childNodes[0].remove()
+                    // 
+                }
+            }
+        })()
+        function openA(target) {
+            // var e = window.event || arguments.callee.caller.arguments[0];
+            let a = document.querySelector(`#${target}`)
+
+            // let body = document.querySelector('body')
+            // body.append(e)
+
+            openModal(a.cloneNode(true))
+        }
+
+
+    </script>
+    <!-- <script>
         console.log('script start');
 
         setTimeout(function () {
@@ -22,7 +65,112 @@
         });
 
         console.log('script end');
-    </script>
+    </script> -->
+    <!-- <script>
+        class Singleton {
+
+            constructor(name) {
+                this.name = name
+            }
+            print() {
+                return this.name
+            }
+        }
+
+        var A = (function () {
+            let single = null
+            return function (name) {
+                if (!single) {
+                    single = new Singleton(name)
+                }
+                return single
+            }
+        })()
+
+        console.log(A('a'))
+        console.log(A('b'))
+        console.log(A('b'))
+
+    </script> -->
+    <!-- <script>
+        function Obj(name) {
+            this.name = name
+        }
+        Obj.prototype.print = function () {
+            console.log(this.name)
+        }
+
+        let createObj = (function () {
+            let single = null
+            return function (name) {
+                if (!single) {
+                    single = new Obj(name)
+                }
+                return single
+            }
+        })()
+        createObj('a').print()
+        createObj('b').print()
+    </script> -->
+
+
+    <!-- <script>
+        function Obj(name) {
+            this.name = name
+            this.single = null
+        }
+        Obj.prototype.print = function () {
+            console.log(this.name)      
+        }
+        Obj.create = function (name) {
+            if (!this.single) {
+                this.single = new Obj(name)
+            }
+            return this.single
+        }
+        let a = Obj.create('a').print()
+        let b = Obj.create('b').print()
+    </script> -->
+
+    <!-- <script>
+
+        let a = (money) => {
+            return 1 * money
+        }
+        function strategy(cb, money) {
+            return cb(money)
+        }
+
+        console.log(strategy(1, 1000))
+        console.log(strategy(2, 1000))
+        console.log(strategy(3, 1000))
+
+    </script> -->
+    <!-- <script>
+        const myImage = (function () {
+            const imgNode = document.createElement('img')
+            document.body.appendChild(imgNode)
+            return {
+                setSrc: function (src) {
+                    imgNode.src = src
+                }   
+            }
+        })()
+        const proxyImage = (function () {
+            const img = new Image()
+            img.onload = function () { // http 图片加载完毕后才会执行
+                myImage.setSrc(this.src)
+            }
+            return {
+                setSrc: function (src) {
+                    myImage.setSrc('./src/imgs/loading.png') // 本地 loading 图片
+                    img.src = src
+                }
+            }
+        })()
+        proxyImage.setSrc('./src/imgs/loaded.png')
+    </script> -->
+
 </body>
 
 </html>

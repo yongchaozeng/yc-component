@@ -18,7 +18,7 @@ function isChildOf(child: React.ReactNode, parent: React.ReactNode) {
     }
     return false;
 }
-
+    
 const CloseModal: FC<CloseModal> = ({ children, callback }) => {
     const container = useRef(null);
     useEffect(() => {

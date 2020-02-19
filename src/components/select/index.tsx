@@ -9,7 +9,7 @@ import './index.less'
 
 var classNames = require('classnames');
 
-type SelectValue = {
+export type SelectValue = {
     name: string | number,
     id: string | number | null
 }
@@ -27,17 +27,23 @@ const Select: FC<Select> = ({ children, onChange }) => {
     const [show, setShow] = useState(false)
     const [value, setValue] = useState('请选择')
 
+    // 滚动条计算位置
     useEffect(() => {
-        // document.onscroll = () => {
-        //     distance(container.current)
-        // }
+        document.addEventListener('scroll', () => {
+            distance(container.current)
+        })
+        return (
+            document.removeEventListener('scroll', () => {
+                distance(container.current)
+            })
+        )
     }, [])
 
 
     const distance = (target: any) => {
         // let dom: HTMLDivElement | null = document.querySelector('.select-container')
         if (target && isChildOf(target, container.current)) {
-            setTop(target.parentNode.getBoundingClientRect().bottom)
+            setTop(target.parentNode.getBoundingClientRect().bottom + document.documentElement.scrollTop)
             console.log(target.parentNode.getBoundingClientRect())
         }
     }
@@ -59,7 +65,6 @@ const Select: FC<Select> = ({ children, onChange }) => {
         let tagget: HTMLDivElement = (e.target as HTMLDivElement)
         // console.log(1, (e.target as HTMLDivElement).innerText)
         // console.log(1, (e.target as HTMLDivElement).getAttribute('data-value'))
-        console.log(3)
         if (tagget && tagget.getAttribute('data-value')) {
             setValue(tagget.innerText)
             onChange({ name: tagget.innerText, id: tagget.getAttribute('data-value') })
@@ -76,7 +81,7 @@ const Select: FC<Select> = ({ children, onChange }) => {
                 {
                     (
                         show && <Portal  >
-                            <div className='select-dropdown-menu' onClick={getValue} style={{ top: top }}>
+                            <div className={classNames('select-dropdown-menu', [{ 'select-open-animation': show }])} onClick={getValue} style={{ top: top }}>
                                 {children}
                             </div>
                         </Portal>
