@@ -6,21 +6,192 @@
 
 </head>
 
-<body onclick="show_element(event)">
+<body>
+
     <h1>this is a heading</h1>
     <p>这是段落</p>
     <p>这又是一个段落</p>
-    <script type="text/javascript">
-        function show_element(e) {
-            if (!e) {
-                var e = window.event;
+    <!-- <script>
+        // 两数之和
+        let nums = [2, 7, 11, 15], target = 9;
+        function a(nums, target) {
+            let map = {}
+            for (let i = 0; i < nums.length; i++) {
+                if (map[target - nums[i]] !== undefined) {
+                    return [map[target - nums[i]], i]
+                } else {
+                    map[nums[i]] = i
+                }
             }
-            //获取事件点击元素
-            var targ = e.target;
-            //获取元素名称
-            var tname = targ.tagName;
-            console.log(tname)
-            // alert(tname);
+            return null
+        }
+        console.log(a(nums, target))
+    </script> -->
+    <!-- <script>
+        // 三数之和
+        let nums = [-1, 0, 1, 2, -1, -1,2, -4];
+        var threeSum = function (nums) {
+            const result = [];
+            nums.sort((a, b) => a - b);
+            console.log(nums)
+            for (let i = 0; i < nums.length; i++) {
+                // 跳过重复数字
+                if (i && nums[i] === nums[i - 1]) {
+
+                    continue;
+                }
+                let left = i + 1;
+                let right = nums.length - 1;
+                while (left < right) {
+                    if (i === 1) {
+                        // debugger
+                    }
+
+                    const sum = nums[i] + nums[left] + nums[right];
+                    if (sum > 0) {
+                        right--;
+                    } else if (sum < 0) {
+                        left++;
+                    } else {
+
+                        result.push([nums[i], nums[left++], nums[right--]]);
+                        // console.log(7, result)
+                        // // 跳过重复数字
+                        while (nums[left] === nums[left - 1]) {
+                            left++;
+                        }
+                        // 跳过重复数字
+                        while (nums[right] === nums[right + 1]) {
+                            right--;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        console.log(threeSum(nums))
+    </script> -->
+    <script>
+        let nums = [-1, 0, 1, 2, -1, -1, 2, -4];
+        function getNumberSum(nums) {
+            // if (nums.length < 3) {
+            //     return
+            // }
+            let result = []
+            nums.sort((a, b) => a - b)
+            for (let i = 0; i < nums.length; i++) {
+                if (nums[i] === nums[i - 1]) {
+                    continue
+                };
+                let left = i + 1;
+                let right = nums.length - 1;
+                while (left < right) {
+                    const sum = nums[i] + nums[left] + nums[right];
+                    if (sum > 0) {
+                        right--
+                    } else if (sum < 0) {
+                        left++
+                    } else {
+                        result.push([nums[i], nums[left++], nums[right--]]);
+                        while (nums[left] === nums[left - 1]) {
+                            left++
+                        }
+                        while (nums[right] === nums[right + 1]) {
+                            right--
+                        }
+                    }
+                }
+            }
+            return result
+        }
+        // console.log(getNumberSum(nums));
+        var threeSum = function (nums) {
+            if (nums.length < 3) {
+                return []
+            }
+            let result = []
+            nums.sort((a, b) => a - b)
+            for (let i = 0; i < nums.length; i++) {
+                let left = i + 1
+                let right = nums.length - 1
+
+                if (nums[i] === nums[i - 1]) continue;
+                while (left < right) {
+                    const sum = nums[i] + nums[left] + nums[right]
+                    if (sum > 0) {
+                        right--
+                    } else if (sum < 0) {
+                        left++
+                    } else {
+                        result.push([nums[i], nums[left++], nums[right--]])
+                        while (nums[left] === nums[left - 1]) {
+                            left++
+                        }
+                        while (nums[right] === nums[right + 1]) {
+                            right--
+                        }
+                    }
+                }
+            }
+            return result
+        };
+        console.log(threeSum(nums));
+
+    </script>
+    <!-- <script>
+        
+        console.log(FirstNotRepeatingChar('AAAABZXC'))
+        function FirstNotRepeatingChar(str) {
+            // write code here
+            // for (var i = 0; i < str.length; i++) {
+                console.log(str.indexOf('A'));
+                
+            //     if (str.indexOf(str[i]) == str.lastIndexOf(str[i])) {
+            //         return i;
+            //     }
+            // }
+            return -1;
+        }
+    </script> -->
+    <script>
+        // 复杂链表复制
+        function RandomListNode(x) {
+            this.val = x;
+            this.next = null;
+            this.random = null;
+        }
+
+        function copyRandomList(pHead) {
+            if (pHead === null) return;
+
+            // 对应思路二中的第一步：
+            var currNode = pHead;
+            while (currNode !== null) {
+                var node = new RandomListNode(currNode.val);
+                node.next = currNode.next;
+                currNode.next = node;
+                currNode = node.next;
+            }
+
+            // 对应思路二中的第二步：
+            currNode = pHead;
+            while (currNode !== null && currNode.next !== null) {
+                if (currNode.random) {
+                    currNode.next.random = currNode.random.next;
+                }
+                currNode = currNode.next.next;
+            }
+
+            //拆分，对应思路二中的第三步：        
+            var pCloneHead = pHead.next;
+            var temp = null;
+            currNode = pHead;
+            while (currNode.next !== null) {
+                tmp = currNode.next;
+                currNode.next = tmp.next;
+                currNode = tmp;
+            }
+            return pCloneHead;
         }
     </script>
 </body>
