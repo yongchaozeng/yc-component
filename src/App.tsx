@@ -7,12 +7,12 @@ import jquery from 'jquery'
 
 
 import Home from '@/page/index'
+import Router from '@/router/index'
 
 const App: React.FC = () => {
 
-
   return (
-    <Home />
+    <Router />
   )
 
 }

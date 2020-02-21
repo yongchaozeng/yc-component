@@ -8,7 +8,7 @@ interface Home {
 
 const Home: FC<Home> = (props) => {
     return (
-        <div>home</div>
+        <div>test</div>
     )
 
 }
