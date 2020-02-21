@@ -10,7 +10,7 @@ import Home from '@/page/index'
 import Router from '@/router/index'
 
 const App: React.FC = () => {
-
+  //  https://ccc-registration-dev.dev-test.dragonest.com/?
   return (
     <Router />
   )
