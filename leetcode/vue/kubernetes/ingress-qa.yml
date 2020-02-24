@@ -1,0 +1,58 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ccc-registration
+spec:
+  clusterIP: None
+  selector:
+    app: ccc-registration
+  ports:
+  - port: 80
+    targetPort: 3001
+    name: http
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ccc-registration-qa.dev-test.mmxlr.com
+  annotations:
+    gitlab.ilongyuan.cn/repo: "https://gitlab.ilongyuan.cn/cdshare/china-children-center-registration"
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/preserve-host: "true"
+    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-regex: ^http?://ccc-registration-qa.dev-test.mmxlr.com/(.*)
+    traefik.ingress.kubernetes.io/redirect-replacement: http://ccc.qa.cnccbm.org.cn/$1
+#    traefik.ingress.kubernetes.io/whitelist-source-range: "182.150.46.53/32,220.194.42.10/32"
+spec:
+  rules:
+  - host: ccc-registration-qa.dev-test.mmxlr.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: ccc-registration
+          servicePort: http
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ccc-registration-qa.dev-test.dragonest.com
+  annotations:
+    gitlab.ilongyuan.cn/repo: "https://gitlab.ilongyuan.cn/cdshare/china-children-center-registration"
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/preserve-host: "true"
+    traefik.ingress.kubernetes.io/redirect-regex: ^http?://ccc-registration-qa.dev-test.dragonest.com/(.*)
+    traefik.ingress.kubernetes.io/redirect-replacement: http://ccc.qa.cnccbm.org.cn/$1
+#    traefik.ingress.kubernetes.io/whitelist-source-range: "182.150.46.53/32,220.194.42.10/32"
+spec:
+  rules:
+  - host: ccc-registration-qa.dev-test.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: ccc-registration
+          servicePort: http

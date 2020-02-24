@@ -1,0 +1,65 @@
+image: docker:latest
+stages:
+  - build
+  - update
+
+ 
+#设置登录阿里云镜像仓库所需变量
+variables:
+  REGISTRY: registry.cn-shanghai.aliyuncs.com
+  REGISTRY_USER: $REGISTRY_USER
+  REGISTRY_PASSWORD: $REGISTRY_PASSWORD
+
+#每步都会执行，根据tag信息获取SITE ENV VERSION变量
+before_script:
+  - echo ${CI_COMMIT_TAG}
+  - ENV=$(echo ${CI_COMMIT_TAG} | cut -d '-' -f1)
+  - NAMESPACE=demon-vote-${ENV}
+  - DEPLOYMENT_NAME="demon-vote-web-dep"
+  - CONTAINER_NAME="demon-vote-web"
+  - IMAGE="registry.cn-shanghai.aliyuncs.com/ly_release/demon-vote"
+  - VERSION=$CI_COMMIT_TAG
+
+
+#第一步，构建镜像并提交到阿里云
+build_commit:
+  stage: build
+  services:
+    - docker:dind
+  script:
+    - echo $ENV $VERSION
+    - sed -i s/xxxx/${ENV}/g tools/Dockerfile
+    - cat tools/Dockerfile
+    - echo "docker registry user：$REGISTRY_USER"
+    - echo $REGISTRY_PASSWORD | docker login -u $REGISTRY_USER --password-stdin $REGISTRY
+    - docker build -t $IMAGE:${CI_COMMIT_TAG} -f tools/Dockerfile . --build-arg ACCESSKEYID=$ACCESSKEYID --build-arg ACCESSKEYSECRET=$ACCESSKEYSECRET --build-arg BUCKET=$BUCKET --build-arg REGION=$REGION
+    - docker push $IMAGE:${CI_COMMIT_TAG}
+  tags:
+    - rancher
+    - dev
+  only:
+    - tags
+  except:
+    - master
+ 
+#部署
+update:
+  image: i.harbor.dragonest.net/public/kubectl:v1.11.0.gitlab-cicd
+  stage: update
+  variables:
+    K8S_API_SERVER: ${K8S_API_SERVER}
+    TOKEN: ${KUBECTL_TOKEN}
+    NAMESPACE: ${NAMESPACE}
+    DEPLOYMENT_NAME: ${DEPLOYMENT_NAME}
+    CONTAINER_NAME: ${CONTAINER_NAME}
+    IMAGE: ${IMAGE}
+    VERSION: ${VERSION}
+  script:
+    - echo "Updating the $SITE site $ENV environment"
+    - /gitlab-cicd.sh
+  tags:
+    - rancher
+    - dev
+  only:
+    - tags
+  when: manual

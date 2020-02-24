@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>斐波那契</title>
+</head>
+
+<body>
+    <script>
+        let n = 45
+        // 递归
+        // function fibonacc(n) {
+        // if (n < 2) {
+        //     return n
+        // } else {
+        //     return fibonacc(n - 1) + fibonacc(n - 2)
+        // }
+        // }
+
+        function fibonacc(n) {
+            let val = []
+            val[0] = 0
+            val[1] = 1
+            if (n < 2) {
+                return n
+            } else {
+                for (let i = 2; i <= n; i++) {
+                    val[i] = val[i - 1] + val[i - 2];
+                }
+                console.log(val);
+
+                return val[n]
+            }
+        }
+        console.log(fibonacc(n));
+
+    </script>
+</body>
+
+</html>

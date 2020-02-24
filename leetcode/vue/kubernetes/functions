@@ -1,0 +1,39 @@
+#!/bin/bash
+function set_kubectl(){
+    #usage: set_kubectl ${NAMESPACE} ${TOKEN}
+    kubectl config set-cluster mycluster --server=${K8S_API_SERVER} --insecure-skip-tls-verify
+    kubectl config set-credentials myclient --token=$2
+    kubectl config set-context mycontext --cluster=mycluster --namespace=${1} --user=myclient
+    kubectl config use-context mycontext
+}
+
+function ensure_namespace(){
+    kubectl describe namespace "$1" || kubectl create namespace "$1"
+}
+
+# usage:  ensure_deployment <namespace> <dep yaml file>
+function ensure_resource(){
+    sed -e "s/IMAGE_PLACEHOLDER/${CI_COMMIT_TAG}/g" -e "s/REPLICAS_PLACEHOLDER/${REPLICAS:-1}/g" $2 | kubectl apply -n $1 -f -
+}
+
+function dryrun_ensure_resource(){
+    sed -e "s/IMAGE_PLACEHOLDER/${CI_COMMIT_TAG}/g" -e "s/REPLICAS_PLACEHOLDER/${REPLICAS:-1}/g" $2
+}
+
+# usage: create_registry_secret <namespace> <name>
+function create_registry_secret(){
+    kubectl create secret docker-registry -n $1 --dry-run=true $2 \
+      --docker-server=${REGISTRY_VPC} \
+      --docker-username=${REGISTRY_USER} \
+      --docker-password=${REGISTRY_PASSWORD} \
+      --docker-email=${REGISTRY_EMAIL} -o yaml | kubectl replace -n $1 --force -f -
+}
+
+function update_image(){
+    kubectl set image -n "${1}" deployment/${2} ${3}=${4}
+}
+
+# usage: ensure_secret_from_file <namespace> <name> <secret file>
+function ensure_secret_from_file(){
+    kubectl apply -f  <(kubectl create secret generic $2 --namespace=$1 --from-file=$3 --dry-run --output=yaml)
+}

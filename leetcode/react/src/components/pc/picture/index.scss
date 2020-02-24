@@ -1,0 +1,48 @@
+$fonsSize: 50*2;
+@function r($n) {
+  @return $n/$fonsSize+rem;
+}
+
+.pc-main{
+  .vote-border {
+    position: relative;
+    text-align: center;
+
+    .pitch-on {
+      position: absolute;
+      top: r(17);
+      right: r(10);
+      width: r(60);
+      height: r(60);
+    }
+    img{
+      // height: 100%;
+    }
+
+    &:hover {
+      .shade-box {
+        display: none;
+      }
+    }
+  }
+  .shade-box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    &:hover {
+      display: none;
+    }
+  }
+  .shade-img{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+}

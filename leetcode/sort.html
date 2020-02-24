@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排序</title>
+</head>
+
+<body>
+    <script>
+        let a = [5, 1, 1, 2, 0, 0]
+        // 冒泡 耗时 4472ms 内存40m
+        // function sort(nums) {
+        //     let temporary = null
+        //     for (let i = 0; i < nums.length - 1; i++) {
+        //         for (let j = i + 1; j < nums.length ; j++) {
+        //             if (nums[i] > nums[j]) {
+        //                 temporary = nums[i]
+        //                 nums[i] = nums[j]
+        //                 nums[j] = temporary
+        //             }
+        //         }
+        //     }
+        //     return nums
+        // }
+        function sort(nums) {
+            // 冒泡 耗时 132ms 内存56m
+            let arr = nums[0]
+            let left = []
+            let right = []
+            if (nums.length > 1) {
+                for (let i = 1; i < nums.length; i++) {
+                    if (nums[i] < arr) {
+                        left.push(nums[i])
+                    } else {
+                        right.push(nums[i])
+                    }
+                }
+                return sort(left).concat(arr).concat(sort(right))
+
+            } else {
+                return nums
+            }
+        }
+        // function sort(array) {
+        //     if (array.length < 2) {
+        //         return array;
+        //     }
+        //     const target = array[0];
+        //     const left = [];
+        //     const right = [];
+        //     for (let i = 1; i < array.length; i++) {
+        //         if (array[i] < target) {
+        //             left.push(array[i]);
+        //         } else {
+        //             right.push(array[i]);
+        //         }
+        //     }
+        //     return sort(left).concat([target], sort(right));
+        // }
+        console.log(sort(a));
+
+    </script>
+</body>
+
+</html>

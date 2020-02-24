@@ -1,0 +1,268 @@
+@mixin clear-both {
+  &:after {
+    clear: both;
+    content: '.';
+    display: block;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+  }
+}
+
+@mixin box-center {
+  width: 1200px;
+  margin: 0 auto;
+
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 5;
+  background: url("../../../assets/imgs/header-background.png") no-repeat;
+  background-size: 100% 100%;
+
+  .header-main {
+    @include box-center;
+    line-height: 54px;
+    @include clear-both;
+
+    .header-left {
+      float: left;
+      padding: 13px 0;
+      @include clear-both;
+
+      .login-icon {
+        float: left;
+        width: 54px;
+        height: 54px;
+        margin-right: 23px;
+      }
+
+      .login-white {
+        color: #fff;
+        font-size: 20px;
+        font-style: italic;
+
+      }
+
+      .login-logout {
+        display: inline-block;
+        margin-left: 30px;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+
+      }
+
+      .login-tips {
+        color: #ccc;
+        font-style: italic;
+        cursor: pointer;
+      }
+
+      .login-text {
+        float: left;
+        height: 30px;
+        margin-top: 17px;
+        line-height: 23px;
+        font-weight: bold;
+        border-bottom: 2px solid #ADB0BC;
+        font-style: italic;
+      }
+
+    }
+
+    .header-right {
+      float: right;
+      font-size: 16px;
+      font-weight: 400;
+      margin-top: 13px;
+      color: rgba(255, 255, 255, 1);
+
+      .share-box-hover {
+        &:hover {
+          .share-modal-box {
+            display: block;
+          }
+        }
+      }
+
+      .share-modal-box {
+        display: none;
+
+        .share-box {
+          margin-top: 55px;
+          width: 220px;
+          height: 319px;
+          background: url("../../../assets/imgs/hover-modal.png") no-repeat;
+          background-size: 100% 100% ;
+          overflow: hidden;
+
+          .share-list {
+            height: 40px;
+            margin-top: 30px;
+            text-align: center;
+            line-height: 40px;
+
+            .share-icon {
+              vertical-align: middle;
+              margin-right: 12px;
+            }
+
+            span {
+              height: 16px;
+              font-size: 16px;
+              font-weight: 400;
+              color: rgba(255, 255, 255, 1);
+              vertical-align: middle;
+            }
+
+            &:hover {
+              background: url("../../../assets/imgs/share-hover.png") no-repeat;
+              background-size: 100% 100%;
+            }
+          }
+
+          .share-list:nth-last-of-type(1) {
+            margin-bottom: 50px;
+          }
+        }
+
+        &:hover {
+          display: block;
+        }
+      }
+
+      .download-box-hover {
+        &:hover {
+          .download-modal-box {
+            display: block;
+          }
+        }
+      }
+
+      .download-modal-box {
+        display: none;
+
+        .download-box {
+          margin-top: 55px;
+          width: 267px;
+          height: 346px;
+          text-align: center;
+          background: url("../../../assets/imgs/hover-modal.png") no-repeat;
+          background-size: 100% 100% ;
+          overflow: hidden;
+
+          .download-code {
+            width: 231px;
+            height: 179px;
+            margin: 27px 18px 0 18px;
+            background: url("../../../assets/imgs/download-code-background.png") no-repeat;
+
+            .qr-code-img {
+              width: 177px;
+              height: 177px;
+              margin-left: 51px;
+            }
+
+          }
+
+          .download-ios {
+            width: 231px;
+            height: 179px;
+            text-align: center;
+            line-height: 179px;
+            margin: 27px 18px 0 18px;
+          }
+
+          .iphone-icon {
+            display: inline-block;
+            width: 27px;
+            vertical-align: middle;
+          }
+
+          .download-text {
+            //margin-left: 16px;
+            display: inline-block;
+            width: 135px;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 1);
+            vertical-align: middle;
+          }
+        }
+
+        &:hover {
+          display: block;
+        }
+      }
+
+      .icon-box {
+        display: inline-block;
+        position: relative;
+        margin-left: 67px;
+        color: #fff;
+        cursor: pointer;
+
+        .icon {
+          height: 16px;
+          margin-right: 12px;
+          vertical-align: middle;
+        }
+
+        .text {
+          line-height: 15px;
+          vertical-align: middle;
+
+        }
+
+        .modal-box {
+          position: absolute;
+          top: 9px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 220px;
+          height: 374px;
+
+        }
+
+      }
+
+
+    }
+
+
+    .logo {
+      position: absolute;
+      left: 50%;
+      margin-left: -70px;
+    }
+
+
+  }
+}
+
+
+.qr-modal {
+  .qr-code {
+    width: 190px;
+    height: 190px;
+    margin-bottom: 30px;
+  }
+
+  .modal-text {
+    font-size: 26px;
+    font-weight: 400;
+    color: rgba(145, 125, 186, 1);
+    line-height: 40px;
+
+  }
+
+  a {
+    font-weight: bold;
+    color: #fff;
+  }
+}

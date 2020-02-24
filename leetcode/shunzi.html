@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let array = [1, 0, 3, 4, 5]
+        function isShunzi(nums) {
+            let bool = true
+            for (let i = 0; i < nums.length; i++) {
+                if (i > 0) {
+                    if (nums[i] - nums[i - 1] !== 1 && nums[i] - nums[i - 1] !== nums[i]) {
+                        bool = false
+                    }
+                }
+            }
+            return bool
+        }
+        console.log(isShunzi(array));
+    </script>
+</body>
+
+</html>
