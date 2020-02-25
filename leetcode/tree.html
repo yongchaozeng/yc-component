@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tree</title>
+</head>
+
+<body>
+    <script>
+        class Node {
+            constructor(value) {
+                this.value = value
+                this.left = null
+                this.right = null
+
+            }
+            show() {
+                console.log(this.value);
+            }
+        }
+        class Tree {
+            constructor(value) {
+                this.root = null
+            }
+            // 遍历实现
+            add(value) {
+                let node = new Node(value)
+                if (!this.root) {
+                    this.root = node
+                    return
+                }
+                var current = this.root;
+                var parent = null;
+                while (current) {
+                    parent = current
+                    if (value > current.value) {
+                        current = current.right
+                        if (!current) {
+                            parent.right = node
+                        }
+                    } else {
+                        current = current.left
+                        if (!current) {
+                            parent.left = node
+                        }
+                    }
+                }
+            }
+            // 递归实现
+            // add(value) {
+            //     let newNode = new Node(value)
+            //     if (!this.node) {
+            //         this.node = newNode
+            //     } else {
+            //         addNode(this.node)
+            //     }
+            //     function addNode(node) {
+            //         if (value > node.value) {
+            //             if (!node.right) {
+            //                 node.right = newNode
+            //             } else {
+            //                 addNode(node.right)
+            //             }
+            //         } else {
+            //             if (!node.left) {
+            //                 node.left = newNode
+            //             } else {
+            //                 addNode(node.left)
+            //             }
+            //         }
+            //     }
+            // }
+            // 中序 升序
+            inOrder(root) {
+                if (root) {
+                    this.inOrder(root.left)
+                    root.show()
+                    this.inOrder(root.right)
+                }
+            }
+            // 先序 优先打印自身
+            preOrder(root) {
+                if (root) {
+                    root.show()
+                    this.preOrder(root.left)
+                    this.preOrder(root.right)
+                }
+            }
+            // 后序 最后打印自身
+            laterOrder(root) {
+                if (root) {
+                    this.laterOrder(root.left)
+                    this.laterOrder(root.right)
+                    root.show()
+                }
+            }
+            // 最大值
+            getMax() {
+                let cur = this.root
+                let parent = null
+                while (cur) {
+                    parent = cur
+                    cur = cur.right
+                    if (!cur) {
+                        return parent.value
+                    }
+                }
+            }
+            // 最小值
+            getMax() {
+                let cur = this.root
+                let parent = null
+                while (cur) {
+                    parent = cur
+                    cur = cur.left
+                    if (!cur) {
+                        return parent.value
+                    }
+                }
+            }
+            // 查找
+            find(value) {
+                let cur = this.root
+                while (cur) {
+                    if (value > cur.value) {
+                        cur = cur.right
+                    } else if (value < cur.value) {
+                        cur = cur.left
+                    } else {
+                        return cur
+                    }
+                }
+                return null
+            }
+            // 最大深度
+            getDeep(root) {
+                if (root) {
+                    return Math.max(this.getDeep(root.left), this.getDeep(root.right)) + 1
+                }
+                return 0
+            }
+        }
+        let tree = new Tree()
+        tree.add(8)
+        tree.add(3)
+        tree.add(10)
+        tree.add(1)
+        tree.add(6)
+        tree.add(4)
+        tree.add(7)
+        tree.add(14)
+        tree.add(13)
+        tree.inOrder(tree.root)
+        // console.log(tree.getMax());
+        // console.log(tree.find(26));
+        console.log(tree.getDeep(tree.root));
+
+        console.log(tree);
+
+
+
+
+    </script>
+</body>
+
+</html>
