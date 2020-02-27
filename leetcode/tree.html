@@ -72,13 +72,31 @@
             //         }
             //     }
             // }
-            // 中序 升序
-            inOrder(root) {
-                if (root) {
-                    this.inOrder(root.left)
-                    root.show()
-                    this.inOrder(root.right)
+            // // 中序递归
+            // inOrder(root = this.root) {
+            //     if (root) {
+            //         this.inOrder(root.left)
+            //         root.show()
+            //         this.inOrder(root.right)
+            //     }
+            // }
+            // 中序  遍历版本
+            inOrder() {
+                let cur = this.root
+                let result = []
+                let stack = []
+                while (cur || stack.length > 0) {
+                    while (cur) {
+                        stack.push(cur)
+                        cur = cur.left
+                    }
+                    cur = stack.pop()
+                    result.push(cur.value)
+                    cur = cur.right //不加if 右节点最终成为null  避免了重复入栈  !!
                 }
+                console.log(result);
+
+                return result
             }
             // 先序 优先打印自身
             preOrder(root) {
@@ -141,6 +159,22 @@
                 }
                 return 0
             }
+            // 最小深度
+            getMinDeep(root) {
+
+
+                if (root) {
+                    console.log(root.value);
+                    // if (!root.left) {
+                    //     return 1 + this.getMinDeep(root.right);
+                    // }
+                    // if (!root.right) {
+                    //     return 1 + this.getMinDeep(root.left);
+                    // }
+                    return Math.min(this.getMinDeep(root.left), this.getMinDeep(root.right)) + 1
+                }
+                return 0
+            }
         }
         let tree = new Tree()
         tree.add(8)
@@ -152,15 +186,93 @@
         tree.add(7)
         tree.add(14)
         tree.add(13)
-        tree.inOrder(tree.root)
+        // tree.inOrder(tree.root)
+        // console.log('/n');
+        tree.inOrder()
         // console.log(tree.getMax());
         // console.log(tree.find(26));
-        console.log(tree.getDeep(tree.root));
+        // console.log(tree.getMinDeep(tree.root));
 
         console.log(tree);
+        function reConstructBinaryTree(pre, vin) {
 
+            if (pre.length === 0 || vin.length === 0) { //递归终止条件判断
+                return null
+            }
+            let root = new Node(pre[0])
+            const index = vin.indexOf(pre[0]),  //判断根节点在中序遍历的位置
+                left = vin.slice(0, index),  //左子树
+                right = vin.slice(index + 1);  //右子树
 
+            // if (vin.indexOf(pre[0]) > vin.indexOf(pre[1])) {
+            root.left = reConstructBinaryTree(pre.slice(1, index + 1), left) //左子树
+            // }
 
+            // if (vin.indexOf(pre[0]) < vin.indexOf(pre[1])) {
+            root.right = reConstructBinaryTree(pre.slice(index + 1), right) //左子树
+            // }
+
+            // while (pre[i]) {
+            //     if (!root) {
+            //         root = cur
+            //         par = root
+            //     }
+            //     if () {
+            //         cur = new Node(pre[i])
+            //         par.left = cur
+            //         par = cur
+
+            //     } else if (vin.indexOf(pre[i]) < vin.indexOf(pre[++i])) {
+            //         cur = new Node(pre[i])
+            //         par.right = cur
+            //         par = cur
+            //         // cur.right = new Node(pre[i])
+            //         // par = cur
+            //         // cur = new Node(pre[++i])
+            //     }
+            // }
+            return root
+        }
+        // console.log(reConstructBinaryTree([1, 2, 4, 7, 3, 5, 6, 8], [4, 7, 2, 1, 5, 3, 8, 6]))
+
+        // 根据先序和中序生成二叉树
+        function construct(per, vin) {
+            if (per.length === 0 || vin.length === 0) {
+                return null
+            }
+            let rootValue = per[0]
+            let root = new Node(rootValue)
+            let mid = vin.indexOf(rootValue)
+            let left = vin.slice(0, mid)
+            let right = vin.slice(mid + 1)
+            per.shift()
+            root.left = constructTree(per, left)
+            root.right = constructTree(per, right)
+            return root
+        }
+
+        // console.log(constructTree([1, 2, 4, 7, 3, 5, 6, 8], [4, 7, 2, 1, 5, 3, 8, 6]));
+
+        // 对称二叉树
+        var isSymmetric = function (root) {
+            function getNode(left, right) {
+                if (!left && !right) {
+                    return true
+                }
+                if (!left || !right) {
+                    return false
+                }
+                if (left.val !== right.val) {
+                    return false
+                }
+                return getNode(left.left, right.right) && getNode(left.right, right.left)
+            }
+            if (root) {
+                return getNode(root.left, root.right)
+            } else {
+                return true
+            }
+        };
 
     </script>
 </body>
