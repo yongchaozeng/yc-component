@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="Stats-output">
+    </div>
+    <!-- Div which will hold the Output -->
+    <div id="WebGL-output">
+    </div>
+    <script src="https://unpkg.com/three"></script>
+    <!-- 来自 learning three.js -->
+    <script src="https://unpkg.com/stats.js"></script>
+    <script src="https://cdn.bootcss.com/dat-gui/0.6.5/dat.gui.min.js"></script>
+
+    <script>
+        function init() {
+            // 获取浏览器窗口的宽高，后续会用
+            var width = window.innerWidth
+            var height = window.innerHeight
+
+            // 创建一个场景
+            var scene = new THREE.Scene()
+
+            // 创建一个具有透视效果的摄像机
+            var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 800)
+
+            // 设置摄像机位置，并将其朝向场景中心
+            camera.position.x = 20
+            camera.position.y = 10
+            camera.position.z = 30
+            camera.lookAt(scene.position)
+
+            // 创建一个 WebGL 渲染器，Three.js 还提供 <canvas>, <svg>, CSS3D 渲染器。
+            var renderer = new THREE.WebGLRenderer({
+                antialias: true // 开启抗齿锯效果
+            })
+
+            // 设置渲染器的清除颜色（即背景色）和尺寸
+            renderer.setClearColor(0xffffff)
+            renderer.setSize(width, height)
+
+            // 创建一个聚光灯，并将其设置恰当位置后添加到场景中
+            var spotLight = new THREE.SpotLight(0xffffff)
+            spotLight.position.set(10, 50, 20)
+            scene.add(spotLight)
+
+            // 创建一个长宽高为 4 的立方体
+            var cubeGeometry = new THREE.BoxGeometry(4, 4, 4)
+
+            // 创建点集（Points）材质
+            var cubePointMaterial = new THREE.PointsMaterial({
+                color: 0xff0000,
+                size: 0.4
+            })
+
+            // 创建线（Line）材质
+            var cubeLineMaterial = new THREE.LineBasicMaterial({
+                color: 0x00ff00
+            })
+
+            // 创建 Lambert 材质：会对场景中的光源作出反应，但表现为暗淡，而不光亮。
+            var cubePlaneMaterial = new THREE.MeshLambertMaterial({
+                color: 0x0000ff,
+            })
+
+            // 立方体的多种表现形式：点集、线、面
+            var pointCube = new THREE.Points(cubeGeometry, cubePointMaterial)
+            var lineCube = new THREE.Line(cubeGeometry, cubeLineMaterial)
+            var meshCube = new THREE.Mesh(new THREE.BoxGeometry(4, 4, 4), cubePlaneMaterial)
+
+            pointCube.position.set(-8, 0, 0)
+            meshCube.position.set(8, 0, 0)
+
+            // 一次性向场景添加三种表现形式
+            scene.add(pointCube, lineCube, meshCube)
+
+            // 将渲染器的输出（此处是 canvas 元素）插入到 body
+            document.body.appendChild(renderer.domElement)
+
+            // 渲染，即摄像机拍下此刻的场景
+            renderer.render(scene, camera)
+        }
+        init()
+    </script>
+
+    <!-- <script>
+        // once everything is loaded, we run our Three.js stuff.
+        // 在所有资源加载完成后，再执行 three.js 的东西
+        function init() {
+
+            var stats = initStats();
+            // 创建一个场景，它能放置所有元素，如网格对象、摄像机和灯光等
+            var scene = new THREE.Scene();
+
+            // 创建一个摄像机，它定义了我们的观察位置
+            var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 100, 800);
+            camera.position.x = 100;
+            camera.position.y = 20;
+            camera.position.z = 30;
+
+            // 创建一个渲染器并设置其大小
+            var renderer = new THREE.WebGLRenderer();
+
+            renderer.setClearColor(0xffffff);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // 创建一个平面
+            var planeGeometry = new THREE.PlaneGeometry(180, 180);
+            var planeMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+            var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+
+            // 设置平面的位置和旋转角度
+            // plane.rotation.x = -0.5 * Math.PI;
+            plane.position.x = 0;
+            plane.position.y = 0;
+            plane.position.z = 0;
+
+            // 添加平面置场景
+            scene.add(plane);
+
+            var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
+            // 如果要在几何体创建后访问其属性，不能仅仅使用 plane.width。要访问几何体的属性，必须使用对象的 parameters 属性，如：plane.parameters.width。
+            for (var j = 0; j < (planeGeometry.parameters.height / 5); j++) {
+                for (var i = 0; i < planeGeometry.parameters.width / 5; i++) {
+                    var rnd = Math.random() * 0.75 + 0.25;
+                    var cubeMaterial = new THREE.MeshLambertMaterial({  wireframe: false});
+                    cubeMaterial.color = new THREE.Color(rnd, 0, 0);
+                    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+                    cube.position.z = -((planeGeometry.parameters.height) / 2) + 2 + (j * 5);
+                    cube.position.x = -((planeGeometry.parameters.width) / 2) + 2 + (i * 5);
+                    cube.position.y = 2;
+
+                    scene.add(cube);
+                }
+            }
+
+            // 创建一个平行光并设置其位置
+            var directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+            directionalLight.position.set(-20, 40, 60);
+            scene.add(directionalLight);
+
+
+            // 增加一个环境光，提亮整个场景
+            var ambientLight = new THREE.AmbientLight(0x292929);
+            scene.add(ambientLight);
+
+            // 将渲染器的输入（canvas）插入到特定 DOM 元素下
+            document.getElementById("WebGL-output").appendChild(renderer.domElement);
+
+
+            // dat.gui 相关的设置
+            var controls = new function () {
+                console.log(0.1);
+                
+                this.perspective = "Perspective";
+                this.switchCamera = function () {
+                    if (camera instanceof THREE.PerspectiveCamera) {
+                        console.log(1);
+
+                        camera = new THREE.OrthographicCamera(window.innerWidth / -16, window.innerWidth / 16, window.innerHeight / 16, window.innerHeight / -16, -200, 500);
+                        camera.position.x = 120;
+                        camera.position.y = 60;
+                        camera.position.z = 180;
+                        camera.lookAt(scene.position);
+                        this.perspective = "Orthographic";
+                    } else {
+                        console.log(2);
+                        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+                        camera.position.x = 120;
+                        camera.position.y = 60;
+                        camera.position.z = 0;
+
+                        camera.lookAt(scene.position);
+                        this.perspective = "Perspective";
+                    }
+                };
+            };
+
+            var gui = new dat.GUI();
+            gui.add(controls, 'switchCamera');
+            gui.add(controls, 'perspective').listen();
+
+            // 确保摄像机第一时刻是看向场景中心（0,0,0）
+            camera.lookAt(scene.position);
+            render();
+
+            function render() {
+
+                stats.update();
+                // render using requestAnimationFrame
+                requestAnimationFrame(render);
+                renderer.render(scene, camera);
+            }
+
+            // 初始化 stats 插件
+            function initStats() {
+
+                var stats = new Stats();
+
+                stats.setMode(0); // 0: fps, 1: ms
+
+                // Align top-left
+                stats.domElement.style.position = 'absolute';
+                stats.domElement.style.left = '0px';
+                stats.domElement.style.top = '0px';
+
+                document.getElementById("Stats-output").appendChild(stats.domElement);
+
+                return stats;
+            }
+        }
+        window.onload = init
+    </script> -->
+
+    <!-- <script>
+        function init() {
+            // 获取浏览器窗口的宽高，后续会用
+            var width = window.innerWidth
+            var height = window.innerHeight
+
+            // 创建一个场景
+            var scene = new THREE.Scene()
+
+            // 创建一个具有透视效果的摄像头
+            var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 800)
+
+            // 创建一个 WebGL 渲染器，Three.js 还提供 <canvas>, <svg>, CSS3D 渲染器。
+            var renderer = new THREE.WebGLRenderer()
+
+            // 设置渲染器的清除颜色（即背景色）和尺寸
+            renderer.setClearColor(0xffffff)
+            renderer.setSize(width, height)
+
+            // Three.js 提供很多种辅助函数(helper)，它有助于调试
+            // 创建坐标轴（RGB颜色 分别代表 XYZ轴）
+            var axisHelper = new THREE.AxisHelper(9)
+
+            // 将立方体网格加入到场景中
+            scene.add(axisHelper)
+
+            // 设置摄像机位置，并将其朝向场景中心
+            camera.position.x = 10
+            camera.position.y = 10
+            camera.position.z = 30
+            camera.lookAt(scene.position)
+
+            // 将渲染器的输出（此处是 canvas 元素）插入到 body
+            document.body.appendChild(renderer.domElement)
+
+            // 渲染，即摄像头拍下此刻的场景
+            renderer.render(scene, camera)
+        }
+        init()
+    </script> -->
+    <!-- <script>
+        function init() {
+            // 获取浏览器窗口的宽高，后续会用
+            var width = window.innerWidth
+            var height = window.innerHeight
+
+            // 创建一个场景
+            var scene = new THREE.Scene()
+
+            // 创建一个具有透视效果的摄像头
+            var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 800)
+
+            // 创建一个 WebGL 渲染器，Three.js 还提供 <canvas>, <svg>, CSS3D 渲染器。
+            var renderer = new THREE.WebGLRenderer()
+
+            // 设置渲染器的清除颜色（即背景色）和尺寸
+            renderer.setClearColor(0xffffff)
+            renderer.setSize(width, height)
+
+            // 创建一个长宽高均为 4 个单位长度的立方体（几何体）
+            var cubeGeometry = new THREE.BoxGeometry(8, 8, 8)
+
+            // 创建材质
+            var cubeMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff0000,
+                wireframe: true
+            })
+
+            // 创建一个立方体网格（mesh）：将材质包裹在几何体上
+            var cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+
+            // 设置立方体网格位置
+            // 设置位置的的方式有三种：
+            // ①直接设置坐标 cube.position.x = 10 cube.position.y = 3 cube.position.z = 1
+            // ②一次性设置 cube.position.set(10, 3, 1)
+            // ③ position 属性是一个 THREE.Vector3 对象 cube.position = new THREE.Vector3(10, 3, 1)
+            cube.position.x = 0
+            cube.position.y = -2
+            cube.position.z = 0
+
+            // 将立方体网格加入到场景中
+            scene.add(cube)
+
+            // 设置摄像机位置，并将其朝向场景中心(0, 0, 0)
+            camera.position.x = 10
+            camera.position.y = 10
+            camera.position.z = 30
+            camera.lookAt(scene.position)
+
+            // 将渲染器的输出（此处是 canvas 元素）插入到 body
+            document.body.appendChild(renderer.domElement)
+
+            // 渲染，即摄像头拍下此刻的场景
+            renderer.render(scene, camera)
+        }
+        init()
+    </script> -->
+    <!-- <script>
+
+
+        function init() {
+            // 获取浏览器窗口的宽高，后续会用
+            var width = window.innerWidth
+            var height = window.innerHeight
+
+            // 创建一个场景
+            var scene = new THREE.Scene()
+
+            // 创建一个具有透视效果的摄像机
+            var camera = new THREE.PerspectiveCamera(32, 1,.5, 800)
+
+            // 设置摄像机位置，并将其朝向场景中心
+            camera.position.x = 70
+            camera.position.y = 70
+            camera.position.z = 70
+            camera.lookAt(scene.position)
+
+            // 创建一个 WebGL 渲染器，Three.js 还提供 <canvas>, <svg>, CSS3D 渲染器。
+            var renderer = new THREE.WebGLRenderer()
+
+            // 设置渲染器的清除颜色（即背景色）和尺寸。
+            // 若想用 body 作为背景，则可以不设置 clearColor，然后在创建渲染器时设置 alpha: true，即 new THREE.WebGLRenderer({ alpha: true })
+            renderer.setClearColor(0xffffff)
+            renderer.setSize(width, height)
+
+            // 创建一个长宽高均为 4 个单位长度的立方体（几何体）
+            var cubeGeometry = new THREE.BoxGeometry(4, 4, 4)
+
+            // 创建材质（该材质不受光源影响）
+            var cubeMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff0000
+            })
+
+            // 创建一个立方体网格（mesh）：将材质包裹在几何体上
+            var cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+
+            // 设置网格的位置
+            cube.position.x = 0
+            cube.position.y = -2
+            cube.position.z = 0
+
+            // 将立方体网格加入到场景中
+            scene.add(cube)
+
+            // 将渲染器的输出（此处是 canvas 元素）插入到 body 中
+            document.body.appendChild(renderer.domElement)
+
+            // 渲染，即摄像机拍下此刻的场景
+            renderer.render(scene, camera)
+        }
+        init()
+    </script> -->
+</body>
+
+</html>

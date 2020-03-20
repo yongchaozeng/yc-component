@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class ListNode {
+            constructor(val) {
+                this.val = val
+                this.next = null
+            }
+            log() {
+                console.log(this.val);
+            }
+
+        }
+        class ChainedList {
+            constructor() {
+                this.root = null
+            }
+            append(val) {
+                let node = new ListNode(val)
+                let cur = this.root
+                if (!this.root) {
+                    this.root = node
+                    return
+                }
+
+                while (cur.next) {
+                    cur = cur.next
+                }
+                cur.next = node
+            }
+            log() {
+                let cur = this.root
+                while (cur) {
+                    cur.log()
+                    cur = cur.next
+                }
+            }
+        }
+        let chainedList = new ChainedList()
+        chainedList.append(3)
+        chainedList.append(2)
+        chainedList.append(1)
+        chainedList.append(4)
+        chainedList.append(6)
+        // console.log(chainedList);
+        chainedList.log()
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+.modal-mask{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+}
+.modal-warp{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    overflow: auto;
+    outline: 0;
+}
+.modal-content{
+    position: relative;
+    top: 100px;
+    left: 50%;
+    width: 520px;
+    min-height: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    // overflow: hidden;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid transparent;
+
+}
+.modal-close{
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+}

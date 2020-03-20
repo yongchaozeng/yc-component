@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let vdom = {
+            tag: "div",
+            props: {},
+            children: [
+                "Hello World",
+                {
+                    tag: "ul",
+                    props: {},
+                    children: [{
+                        tag: "li",
+                        props: {
+                            id: 1,
+                            class: "li-1"
+                        },
+                        children: ["第", 1]
+                    }]
+                }
+            ]
+        }
+
+        function render(vdom) {
+            if (!vdom) {
+                return
+            }
+            if (typeof vdom === 'string' ||typeof vdom === 'number' ) {
+                return vdom
+            }
+            let { props, tag, children } = vdom
+            let a = document.createElement(tag)
+            if (props) {
+                for (let key in props) {
+                    a.setAttribute(key, props[key])
+                }
+            }
+
+            if (children) {
+                children.map((item, index) => {
+                    if(!item){
+                        return
+                    }
+                    a.append(render(item))
+                })
+            }
+            return a
+        }
+        document.body.append(render(vdom))
+    </script>
+</body>
+
+</html>
